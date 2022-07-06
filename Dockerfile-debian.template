@@ -16,7 +16,7 @@
 # limitations under the License.
 ###############################################################################
 
-FROM %%FROM_IMAGE%%
+FROM hub.17usoft.com/bigdata/%%FROM_IMAGE%%
 
 # Grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.11

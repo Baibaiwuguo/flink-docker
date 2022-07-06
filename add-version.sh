@@ -59,7 +59,7 @@ fi
 
 # Defaults, can vary between versions
 scala_versions=2.11
-java_versions=(1.8-202107081152, 11-202201252233)
+java_versions=(1.8-202107081152 11-202201252233)
 
 if [ -d "$flink_release" ]; then
     error "Directory $flink_release already exists; delete before continuing"

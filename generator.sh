@@ -12,7 +12,7 @@ function generateDockerfile {
     java_version=$3
     source_variant=$4
 
-    from_docker_image="hub.17usoft.com/bigdata/java:${java_version}"
+    from_docker_image="java:${java_version}"
 
     cp docker-entrypoint.sh "$dir/docker-entrypoint.sh"
 
