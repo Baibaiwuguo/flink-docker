@@ -9,13 +9,10 @@ function generateDockerfile {
     # define variables
     dir=$1
     binary_download_url=$2
-    asc_download_url=$3
-    gpg_key=$4
-    check_gpg=$5
-    java_version=$6
-    source_variant=$7
+    java_version=$3
+    source_variant=$4
 
-    from_docker_image="openjdk:${java_version}-jre"
+    from_docker_image="hub.17usoft.com/bigdata/java:${java_version}"
 
     cp docker-entrypoint.sh "$dir/docker-entrypoint.sh"
 
@@ -25,9 +22,6 @@ function generateDockerfile {
     # generate Dockerfile
     sed \
         -e "s,%%BINARY_DOWNLOAD_URL%%,${escaped_binary_download_url}," \
-        -e "s,%%ASC_DOWNLOAD_URL%%,$asc_download_url," \
-        -e "s/%%GPG_KEY%%/$gpg_key/" \
-        -e "s/%%CHECK_GPG%%/${check_gpg}/" \
         -e "s/%%FROM_IMAGE%%/${from_docker_image}/" \
         "Dockerfile-$source_variant.template" > "$dir/Dockerfile"
 }
