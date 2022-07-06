@@ -59,54 +59,7 @@ fi
 
 # Defaults, can vary between versions
 scala_versions=2.11
-java_versions=8
-gpg_key=
-
-# Version-specific variants (example)
-# if [ "$flink_release" = "x.y" ]; then
-#     scala_versions=( 2.10 2.11 2.12 )
-# fi
-
-# No real need to cull old versions
-if [ "$flink_version" = "1.8.0" ]; then
-    gpg_key="F2A67A8047499BBB3908D17AA8F4FD97121D7293"
-elif [ "$flink_version" = "1.8.1" ]; then
-    gpg_key="8FEA1EE9D0048C0CCC70B7573211B0703B79EA0E"
-elif [ "$flink_version" = "1.8.2" ]; then
-    gpg_key="E2C45417BED5C104154F341085BACB5AEFAE3202"
-elif [ "$flink_version" = "1.8.3" ]; then
-    gpg_key="EF88474C564C7A608A822EEC3FF96A2057B6476C"
-elif [ "$flink_version" = "1.9.0" ]; then
-    gpg_key="1C1E2394D3194E1944613488F320986D35C33D6A"
-elif [ "$flink_version" = "1.9.1" ]; then
-    gpg_key="E2C45417BED5C104154F341085BACB5AEFAE3202"
-elif [ "$flink_version" = "1.9.2" ]; then
-    gpg_key="EF88474C564C7A608A822EEC3FF96A2057B6476C"
-elif [ "$flink_version" = "1.9.3" ]; then
-    gpg_key="6B6291A8502BA8F0913AE04DDEB95B05BF075300"
-elif [ "$flink_version" = "1.10.0" ]; then
-    gpg_key="BB137807CEFBE7DD2616556710B12A1F89C115E8"
-elif [ "$flink_version" = "1.11.0" ]; then
-    gpg_key="2DA85B93244FDFA19A6244500653C0A2CEA00D0E"
-elif [ "$flink_version" = "1.12.0" ]; then
-    gpg_key="D9839159"
-elif [ "$flink_version" = "1.12.1" ]; then
-    gpg_key="F8E419AA0B60C28879E876859DFF40967ABFC5A4"
-elif [ "$flink_version" = "1.12.2" ]; then
-    gpg_key="0D545F264D2DFDEBFD4E038F97B4625E2FCF517C"
-elif [ "$flink_version" = "1.12.3" ]; then
-    gpg_key="A53C7D531C6889386EB6D94E476DAA5D1FF08189"
-elif [ "$flink_version" = "1.12.4" ]; then
-    gpg_key="A53C7D531C6889386EB6D94E476DAA5D1FF08189"
-elif [ "$flink_version" = "1.12.5" ]; then
-    gpg_key="9545FBA24D2225795DBAAF8EFBB83C0A4FFB9CA8"
-elif [ "$flink_version" = "1.12.6" ]; then
-    gpg_key="19F2195E1B4816D765A2C324C2EED7B111D464BA"
-elif [ "$flink_version" = "1.12.7" ]; then
-    gpg_key="19F2195E1B4816D765A2C324C2EED7B111D464BA"
-else
-    error "Missing GPG key ID for this release"
-fi
+java_versions=(1.8-202107081152, 11-202201252233)
 
 if [ -d "$flink_release" ]; then
     error "Directory $flink_release already exists; delete before continuing"
@@ -125,11 +78,9 @@ for source_variant in "${SOURCE_VARIANTS[@]}"; do
             flink_url_file_path=flink/flink-${flink_version}/flink-${flink_version}-bin-scala_${scala_version}.tgz
 
             flink_tgz_url="https://www.apache.org/dyn/closer.cgi?action=download&filename=${flink_url_file_path}"
-            # Not all mirrors have the .asc files
-            flink_asc_url=https://www.apache.org/dist/${flink_url_file_path}.asc
 
             mkdir "$dir"
-            generateDockerfile "${dir}" "${flink_tgz_url}" "${flink_asc_url}" ${gpg_key} true ${java_version} ${source_variant}
+            generateDockerfile "${dir}" "${flink_tgz_url}" ${java_version} ${source_variant}
             generateReleaseMetadata "${dir}" ${flink_release} ${flink_version} ${scala_version} ${java_version} ${source_variant}
         done
     done
